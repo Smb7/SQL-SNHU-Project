@@ -1,0 +1,86 @@
+#Create table in Database
+CREATE TABLE RMA (
+RMAID INT PRIMARY KEY,
+OrderID INT,
+Step VARCHAR(50),
+Status VARCHAR(15),
+Reason VARCHAR(15),
+FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
+);
+
+# loading file data into a table in mySQL
+LOAD DATA INFILE '/home/codio/workspace/rma.csv'
+INTO TABLE RMA
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n';
+
+# query to select data
+SELECT
+    COUNT(Orders.OrderID)
+FROM
+    Orders
+JOIN
+    Customers
+ON
+    Orders.OrderID = Customers.City, Customers.State
+WHERE
+    Customers.City and Customers.State = Framingham, Massachusetts;
+
+SELECT COUNT(Orders.OrderID)
+FROM Orders
+JOIN Customers
+ON Orders.OrderID = Customers.City, Customers.State
+WHERE Customers.City and Customers.State = 'Framingham, Massachusetts';
+
+SELECT COUNT(Orders.OrderID)
+FROM Orders
+JOIN Customers
+ON Orders.CustomerID = Customers.CustomerID
+WHERE Customers.City = 'Framingham' AND Customers.State = 'Massachusetts';
+
+SELECT COUNT(*) FROM Customers Where State = 'Massachusetts';
+
+# CUSTOMER INSERT STATEMENTS 
+
+INSERT INTO Customers (CustomerID, FIRSTNAME, LASTNAME, StreetAddress, City, State, Zipcode, Telephone)
+VALUES (100004,'Luke','Skywalker','17 Maiden Lane','New York','NY',10222,212-555-1234);
+
+INSERT INTO Customers (CustomerID, FIRSTNAME, LASTNAME, StreetAddress, City, State, Zipcode, Telephone)
+VALUES (100005,'Winston','Smith','128 Sycamore Street','Greensboro','NC',27401,919-555-6623);
+
+INSERT INTO Customers (CustomerID, FIRSTNAME, LASTNAME, StreetAddress, City, State, Zipcode, Telephone)
+VALUES (100006,'MaryAnne','Jenkins','2 Coconut Way','Jupiter','FL',33458,321-555-8907);
+
+INSERT INTO Customers (CustomerID, FIRSTNAME, LASTNAME, StreetAddress, City, State, Zipcode, Telephone)
+VALUES (100007,'Janet','Williams','58 Redondo Beach Blvd','Torrence','CA',90501,310-555-5678);
+
+
+
+# ORDERS INSERT STATEMENT
+INSERT INTO Orders (OrderID, CustomerID, SKU, Description)
+VALUES (1204305,100004,'ADV-24-10C','Advanced Switch 10GigE Copper 24 port');
+
+INSERT INTO Orders (OrderID, CustomerID, SKU, Description)
+VALUES (1204306,100005,'ADV-48-10F','Advanced Switch 10 GigE Copper/Fiber 44 port copper 4 port fiber');
+
+INSERT INTO Orders (OrderID, CustomerID, SKU, Description)
+VALUES (1204307,100006,'ENT-24-10F','Enterprise Switch 10GigE SFP+ 24 Port');
+
+INSERT INTO Orders (OrderID, CustomerID, SKU, Description)
+VALUES (1204308,100007,'ENT-48-10F','Enterprise Switch 10GigE SFP+ 48 port');
+
+# Update Statment
+UPDATE RMA SET Status = 'Completed', Step = 'Credit Customer Account' WHERE OrderID = 5175;
+
+# Delete records
+DELETE FROM RMA WHERE REASON like 'Rejected%';
+
+# Export Content of MySQL Table
+SELECT *
+FROM orders
+INTO OUTFILE '/home/codio/workspace/Orders.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+select * from Orders into outfile '/home/codio/workspace/orders2.csv' FIELDS TERMINATED BY ',';
